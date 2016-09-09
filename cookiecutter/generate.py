@@ -328,8 +328,7 @@ def generate_files(repo_dir, context=None, output_dir='.',
                         os.symlink(os.readlink(infile), outfile)
                     else:
                         shutil.copyfile(infile, outfile)
-
-                    shutil.copymode(infile, outfile)
+                        shutil.copymode(infile, outfile)
                     continue
                 logging.debug('f is {0}'.format(f))
                 try:
