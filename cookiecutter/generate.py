@@ -35,6 +35,7 @@ def copy_without_render(path, context):
     :param context: cookiecutter context.
     """
     try:
+
         for dont_render in context['cookiecutter']['_copy_without_render']:
             if fnmatch.fnmatch(path, dont_render):
                 return True
@@ -322,7 +323,12 @@ def generate_files(repo_dir, context=None, output_dir='.',
                         'Copying file {0} to {1} without rendering'
                         ''.format(infile, outfile)
                     )
-                    shutil.copyfile(infile, outfile)
+
+                    if context['cookiecutter']['_copy_without_render_nofollowsymlinks'] and os.path.islink(infile):
+                        os.symlink(os.readlink(infile), outfile)
+                    else:
+                        shutil.copyfile(infile, outfile)
+
                     shutil.copymode(infile, outfile)
                     continue
                 logging.debug('f is {0}'.format(f))
